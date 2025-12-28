@@ -1,0 +1,19 @@
+services:
+  app:
+    env_file:
+      - ./.env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: dev
+    volumes:
+      - ./src:/app/src
+      - ./src/migrations:/app/src/migrations
+    environment:
+      - ENV=development
+      - PYTHONUNBUFFERED=1
+
+    command: >
+      sh -c "make dev-run"
+    ports:
+      - "8000:8000"
