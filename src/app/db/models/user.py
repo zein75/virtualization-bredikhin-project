@@ -2,6 +2,7 @@ import datetime
 import uuid
 
 from pydantic import EmailStr, field_serializer
+from sqlalchemy import Boolean, Column, text
 from sqlmodel import Field, SQLModel
 
 
@@ -12,6 +13,14 @@ class UserBase(SQLModel):
     email: EmailStr = Field(max_length=255, unique=True, nullable=False, index=True)
     date_of_birth: datetime.date
     is_admin: bool = Field(default=False)
+    is_active: bool = Field(
+        default=True,
+        sa_column=Column(
+            Boolean,
+            nullable=False,
+            server_default=text("true"),
+        ),
+    )
 
 
 class User(UserBase, table=True):
